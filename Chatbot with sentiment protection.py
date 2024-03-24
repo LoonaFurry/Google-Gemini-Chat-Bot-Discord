@@ -37,11 +37,16 @@ async def on_message(message):
         # Get the message content without the mention
         content = message.content.replace(f'<@{bot.user.id}>', '').strip()
 
-        # Generate a response using the Gemini API
-        response = await generate_response(content)
+        # Check if the user provided a message
+        if content:
+            # Generate a response using the Gemini API
+            response = await generate_response(content)
 
-        # Send the response to the channel
-        await message.channel.send(response)
+            # Send the response to the channel
+            await message.channel.send(response)
+        else:
+            # Send a message indicating that the user should provide a message
+            await message.channel.send(f"{message.author.mention}, please provide a message for me to respond to.")
 
     # Check if the message contains swear words or is spam
     if await is_swear_or_spam(message.content):
